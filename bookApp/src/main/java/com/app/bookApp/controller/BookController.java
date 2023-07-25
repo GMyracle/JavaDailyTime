@@ -2,10 +2,8 @@ package com.app.bookApp.controller;
 
 
 import com.app.bookApp.dataaccess.BookEntity;
-import com.app.bookApp.dataaccess.BookTest;
-import com.app.bookApp.exception.BookNotFoundException;
 import com.app.bookApp.repository.BookRepository;
-import com.app.bookApp.response.BookErrorResponse;
+import com.app.bookApp.response.ResponseHandler;
 import com.app.bookApp.service.impl.BookImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+
+import javax.xml.ws.http.HTTPException;
 
 @Controller
 @RequestMapping("/bookmanagement")
@@ -24,38 +25,36 @@ public class BookController {
     BookRepository bookRepository;
 
     @GetMapping("/getdetail")
-    public String getDetailBook(@RequestParam Integer id) {
-        bookImpl.bookDetail(id);
-        return "Success";
+    public ResponseEntity<Object> getDetailBook(@RequestParam Integer id) {
+        return ResponseHandler.responseBuilder("Requested data are given here",
+                ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be CREATED(200 OK)"),
+                bookImpl.bookDetail(id));
+    }
+
+    @DeleteMapping("/deletebook")
+    public ResponseEntity<Object> deleteBook(@RequestParam Integer id) {
+        return ResponseHandler.responseBuilder("Data deleted",
+                ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be CREATED(200 OK)"),
+                bookImpl.deleteBook(id));
 
     }
 
-    @GetMapping("/deletebook")
-    public String deleteBook(@RequestParam Integer id) {
-        bookImpl.deleteBook(id);
-        return "Success";
-
-    }
-
-    @GetMapping("/updatebook")
-    public String updateBook(@RequestBody BookEntity bookEntity) {
-        bookImpl.updateBook(bookEntity);
-        return "Success";
+    @PutMapping("/updatebook")
+    public ResponseEntity<Object> updateBook(@RequestBody BookEntity bookEntity) {
+        return ResponseHandler.responseBuilder("Data updated",
+                ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be CREATED(200 OK)"),
+                bookImpl.updateBook(bookEntity));
+//        bookImpl.updateBook(bookEntity);
+//        return "Success";
     }
 
     @PostMapping("/createbook")
-    public void createBook(@RequestBody BookEntity bookEntity) {
-        bookImpl.createBook(bookEntity);
+    public ResponseEntity<Object> createBook(@RequestBody BookEntity bookEntity) {
+        return ResponseHandler.responseBuilder("Data created",
+                ResponseEntity.status(HttpStatus.OK).body("HTTP Status will be CREATED(200 OK)"),
+                bookImpl.createBook(bookEntity));
+
     }
 
-//    @ExceptionHandler
-//    public ResponseEntity<BookErrorResponse> handleException(BookNotFoundException exc) {
-//
-//        BookErrorResponse error = new BookErrorResponse();
-//        error.setStatus(HttpStatus.NOT_FOUND.value());
-//        error.setMessage(exc.getMessage());
-//        error.setTimeStamp(System.currentTimeMillis());
-//
-//        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-//    }
+
 }

@@ -13,11 +13,13 @@ public interface BookInterface {
 
     BookEntity bookDetail(Integer id);
 
-    void deleteBook(Integer id);
+    Object deleteBook(Integer id);
 
     BookEntity updateBook(BookEntity bookEntity);
 
     void save(BookEntity bookEntity);
 
-    void createBook(BookEntity bookEntity);
+    Object createBook(BookEntity bookEntity);
+
+    
 }

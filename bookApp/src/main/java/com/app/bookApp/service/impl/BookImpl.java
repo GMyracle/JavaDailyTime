@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class BookImpl implements BookInterface {
@@ -35,28 +33,27 @@ public class BookImpl implements BookInterface {
             System.out.println(bookEntity);
             System.out.println(bookRepository.getById(id).getTitle());
             return bookEntity;
-
         } else {
             return null;
         }
     }
 
     @Override
-    public void deleteBook(Integer id) {
+    public BookEntity deleteBook(Integer id) {
 
         if (bookRepository.existsById(id)) {
-
             bookRepository.deleteById(id);
-
         } else {
             throw new BookNotFoundException(id);
         }
+        return bookDetail(id);
     }
 
     @Override
     public BookEntity updateBook(BookEntity bookEntity) {
 
-        if (!bookRepository.existsById(bookEntity.getId())) {
+
+        if (bookRepository.existsById(bookEntity.getId())) {
             // Nếu cuốn sách tồn tại, thực hiện cập nhật thông tin
             BookEntity existingBook = bookRepository.getById(bookEntity.getId());
             existingBook.setAuthor(bookEntity.getAuthor());
@@ -78,7 +75,7 @@ public class BookImpl implements BookInterface {
     }
 
     @Override
-    public void createBook(BookEntity bookEntity) {
+    public BookEntity createBook(BookEntity bookEntity) {
 
         bookRepository.existsById(bookEntity.getId());
 
@@ -89,7 +86,7 @@ public class BookImpl implements BookInterface {
             existingBook.setTitle(bookEntity.getTitle());
             existingBook.setYear(bookEntity.getYear());
             bookRepository.save(existingBook);
-
+            return existingBook;
         } else {
             try {
                 throw new Exception("Da ton tai ban ghi");
@@ -97,6 +94,7 @@ public class BookImpl implements BookInterface {
                 e.printStackTrace();
             }
         }
+        return null;
     }
 
 
