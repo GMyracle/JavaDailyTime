@@ -3,9 +3,11 @@ package com.app.bookApp.service.impl;
 import com.app.bookApp.dataaccess.BookEntity;
 import com.app.bookApp.exception.BookNotFoundException;
 import com.app.bookApp.repository.BookRepository;
+import com.app.bookApp.response.ResponseData;
 import com.app.bookApp.service.bookinterface.BookInterface;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +34,7 @@ public class BookImpl implements BookInterface {
             BookEntity bookEntity = bookRepository.getById(id);
             System.out.println(bookEntity);
             System.out.println(bookRepository.getById(id).getTitle());
-            return bookEntity;
+            return bookEntity ;
         } else {
             return null;
         }
