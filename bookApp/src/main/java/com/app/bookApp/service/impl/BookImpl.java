@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +21,7 @@ public class BookImpl implements BookInterface {
 
     @Override
     public List<BookEntity> getAllBook() {
+
         return null;
     }
 
@@ -36,7 +38,7 @@ public class BookImpl implements BookInterface {
             System.out.println(bookRepository.getById(id).getTitle());
             return bookEntity ;
         } else {
-            return null;
+            throw new BookNotFoundException(id);
         }
     }
 

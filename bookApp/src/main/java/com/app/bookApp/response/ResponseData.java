@@ -42,8 +42,8 @@ public class ResponseData<T> extends BaseObject {
     }
 
     // Phương thức tạo một đối tượng phản hồi thành công với yêu cầu nội bộ
-    public static <T> ResponseData<T> ok(T data,String clientMessageId, String path) {
-        return restResult(null, HttpStatus.OK, null, clientMessageId, path);
+    public static <T> ResponseData<T> ok(T data,HttpStatus httpStatus,String clientMessageId, String path) {
+        return restResult(data, HttpStatus.OK, null, clientMessageId ,  path);
     }
 
     // Phương thức tạo một đối tượng phản hồi thất bại
