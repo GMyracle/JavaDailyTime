@@ -1,6 +1,7 @@
 package com.app.bookApp.service.impl;
 
 import com.app.bookApp.dataaccess.BookEntity;
+import com.app.bookApp.exception.BookExistException;
 import com.app.bookApp.exception.BookNotFoundException;
 import com.app.bookApp.repository.BookRepository;
 import com.app.bookApp.response.ResponseData;
@@ -93,7 +94,7 @@ public class BookImpl implements BookInterface {
             return existingBook;
         } else {
             try {
-                throw new Exception("Da ton tai ban ghi");
+                throw new BookExistException(" ");
             } catch (Exception e) {
                 e.printStackTrace();
             }

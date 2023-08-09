@@ -1,5 +1,6 @@
 package com.app.bookApp.controller;
 
+import com.app.bookApp.exception.BookExistException;
 import com.app.bookApp.exception.BookNotFoundException;
 import net.minidev.json.JSONObject;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -42,6 +43,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         JSONObject json = new JSONObject(body);
 
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json"); // Thêm tiêu đề kiểu dữ liệu
+
         return new ResponseEntity<>(json, headers, HttpStatus.BAD_REQUEST);
     }
 
@@ -51,11 +53,27 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "No cities found");
+        body.put("message", "Not found book with this id");
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json"); // Thêm tiêu đề kiểu dữ liệu
 
-        return new ResponseEntity<>(body,headers, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(body, headers, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(BookExistException.class)
+    public ResponseEntity<Object> handleNodataFoundException(
+            BookExistException ex, WebRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "The book already exist");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json"); // Thêm tiêu đề kiểu dữ liệu
+
+        return new ResponseEntity<>(body, headers, HttpStatus.BAD_REQUEST);
+    }
+
+
 }
